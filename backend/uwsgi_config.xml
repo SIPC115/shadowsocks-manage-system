@@ -1,0 +1,10 @@
+<uwsgi>
+    <module>run</module>
+    <callable>app</callable>
+    <socket>/tmp/ss_api.sock</socket>
+    <chmod-socket>666</chmod-socket>
+    <harakiri>600</harakiri>
+    <post-buffering>8192</post-buffering>
+    <master/>
+    <enable-threads/>
+</uwsgi>  
