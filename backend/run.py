@@ -1,11 +1,12 @@
 # coding:utf-8
 import json
 import os
-from model.user import User
 
 from flask import Flask, abort, g, jsonify, make_response, request, url_for
 from flask_httpauth import HTTPBasicAuth
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from itsdangerous import BadSignature, SignatureExpired
 from passlib.apps import custom_app_context as pwd_context
@@ -15,9 +16,18 @@ app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://sipc115:sipc115@127.0.0.1:3306/shadowsocks_manage'
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 
-db = SQLAlchemy(app)
+engine = create_engine('mysql+pymysql://sipc115:sipc115@127.0.0.1:3306/shadowsocks_manage', convert_unicode=True)
+db_session = scoped_session(sessionmaker(autocommit=False,
+                                         autoflush=False,
+                                         bind=engine))
+Base = declarative_base()
+Base.query = db_session.query_property()
 
 auth = HTTPBasicAuth()
+
+def init_db():
+    import models
+    Base.metadata.create_all(bind=engine)
 
 @app.route('/index')
 def _index():
@@ -33,8 +43,8 @@ def _signup():
         abort(400)
     user = User(username=username)
     user.hash_password(password)
-    db.session.add(user)
-    db.session.commit()
+    db_session.add(user)
+    db_session.commit()
     # 成功注册后返回用户名，Location后面接着的是跳转的地址
     return jsonify({'username': user.username})
 

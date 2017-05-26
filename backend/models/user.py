@@ -1,12 +1,13 @@
 # coding:utf-8
-from run import db
+from sqlalchemy import Column, Integer, String
+from run import Base
 
 
-class User(db.Model):
+class User(Base):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(32), index=True)
-    password_hash = db.Column(db.String(64))
+    id = Column(Integer, primary_key=True)
+    username = Column(String(32), index=True)
+    password_hash = Column(String(64))
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
     def verify_password(self, password):
