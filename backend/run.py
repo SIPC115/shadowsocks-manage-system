@@ -6,7 +6,7 @@ from flask import Flask, abort, request, jsonify, g, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
 
-from user impoer *
+from user import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
