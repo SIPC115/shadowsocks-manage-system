@@ -1,7 +1,7 @@
 # coding:utf-8
 import json
 import os
-from models.database import db_session
+from models.database.database import db_session
 from models.user import User
 
 from flask import Flask, abort, g, jsonify, make_response, request, url_for
@@ -19,6 +19,7 @@ auth = HTTPBasicAuth()
 
 def init_db():
     import models
+    from models.database.database import Base
     Base.metadata.create_all(bind=engine)
 
 @app.route('/index')
