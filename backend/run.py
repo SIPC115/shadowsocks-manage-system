@@ -19,7 +19,7 @@ auth = HTTPBasicAuth()
 
 def init_db():
     import models
-    from models.database.database import Base
+    from models.database.database import Base, engine
     Base.metadata.create_all(bind=engine)
 
 @app.route('/index')
