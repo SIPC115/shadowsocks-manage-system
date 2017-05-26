@@ -9,7 +9,7 @@ from flask_httpauth import HTTPBasicAuth
 
 
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
+app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
 # app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://sipc115:sipc115@127.0.0.1:3306/shadowsocks_manage'
 # app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 
