@@ -2,6 +2,10 @@
 from sqlalchemy import Column, Integer, String
 from database.database import Base
 
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import BadSignature, SignatureExpired
+from passlib.apps import custom_app_context as pwd_context
+
 
 class User(Base):
     __tablename__ = 'users'

@@ -6,9 +6,7 @@ from models.user import User
 
 from flask import Flask, abort, g, jsonify, make_response, request, url_for
 from flask_httpauth import HTTPBasicAuth
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from itsdangerous import BadSignature, SignatureExpired
-from passlib.apps import custom_app_context as pwd_context
+
 
 app = Flask(__name__)
 # app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
