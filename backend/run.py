@@ -2,15 +2,15 @@
 import json
 import os
 
-from flask import Flask, abort, g, jsonify, make_response, request, url_for
-from flask_httpauth import HTTPBasicAuth
 import flask_login
+from flask_login import login_required, logout_user, login_user
+from flask import Flask, abort, g, jsonify, make_response, request, url_for
 
 from models.database.database import db_session
 from models.user import User
 
 app = Flask(__name__)
-app.secret_key = 'debudedebude  # Change this!
+app.secret_key = 'debudedebude'
 # app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
 # app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://sipc115:sipc115@127.0.0.1:3306/shadowsocks_manage'
 # app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
@@ -18,12 +18,16 @@ app.secret_key = 'debudedebude  # Change this!
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
-auth = HTTPBasicAuth()
+# auth = HTTPBasicAuth()
 
 def init_db():
     import models
     from models.database.database import Base, engine
     Base.metadata.create_all(bind=engine)
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 @app.route('/index')
 def _index():
@@ -41,16 +45,25 @@ def _signup():
     user.hash_password(password)
     db_session.add(user)
     db_session.commit()
-    # 成功注册后返回用户名，Location后面接着的是跳转的地址
     return jsonify({'username': user.username})
 
 @app.route('/login')
-@auth.login_required
+@login_required
 def _login():
-    token = g.user.generate_auth_token(600)
-    resp = make_response(jsonify({'token': token.decode('ascii'), 'duration': 600}))
-    resp.set_cookie('user', token)
-    return resp
+    user = User()
+    login_user(user)
+    return "login page"
+
+@app.route('/logout')
+@login_required
+def _logout():
+    logout_user()
+    return "login page"
+
+@app.route('/test')
+@login_required
+def test():
+    return "yes , you are allowed"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
