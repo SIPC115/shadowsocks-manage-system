@@ -48,7 +48,6 @@ def _signup():
     return jsonify({'username': user.username})
 
 @app.route('/login')
-@login_required
 def _login():
     user = User()
     login_user(user)
