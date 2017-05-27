@@ -1,17 +1,22 @@
 # coding:utf-8
 import json
 import os
-from models.database.database import db_session
-from models.user import User
 
 from flask import Flask, abort, g, jsonify, make_response, request, url_for
 from flask_httpauth import HTTPBasicAuth
+import flask_login
 
+from models.database.database import db_session
+from models.user import User
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
+app.secret_key = 'debudedebude  # Change this!
+# app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
 # app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://sipc115:sipc115@127.0.0.1:3306/shadowsocks_manage'
 # app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
+
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
 
 auth = HTTPBasicAuth()
 
@@ -41,7 +46,7 @@ def _signup():
 
 @app.route('/login')
 @auth.login_required
-def get_auth_token():
+def _login():
     token = g.user.generate_auth_token(600)
     resp = make_response(jsonify({'token': token.decode('ascii'), 'duration': 600}))
     resp.set_cookie('user', token)
