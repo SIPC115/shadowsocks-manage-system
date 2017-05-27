@@ -11,14 +11,10 @@ from models.user import User
 
 app = Flask(__name__)
 app.secret_key = 'debudedebude'
-# app.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy dog'
-# app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://sipc115:sipc115@127.0.0.1:3306/shadowsocks_manage'
-# app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
-# auth = HTTPBasicAuth()
 
 def init_db():
     import models
