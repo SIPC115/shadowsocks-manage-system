@@ -27,6 +27,8 @@ def init_db():
 
 @login_manager.user_loader
 def load_user(id):
+    if not id:
+        return None
     return User.query.get(int(id))
 
 @app.route('/index')
@@ -49,7 +51,7 @@ def _signup():
 
 @app.route('/login')
 def _login():
-    user = User()
+    user = User.query.get(1)
     login_user(user)
     return "login page"
 

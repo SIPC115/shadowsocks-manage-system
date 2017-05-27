@@ -46,4 +46,4 @@ class User(Base, UserMixin):
             return False
 
         def get_id(self):
-            return "1"
+            return self.id
