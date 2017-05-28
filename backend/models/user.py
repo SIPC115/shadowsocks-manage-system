@@ -4,8 +4,6 @@ from database.database import Base
 from passlib.apps import custom_app_context as pwd_context
 from flask_login import UserMixin
 
-SECRET_KEY = 'wulalawulalalawulawula'
-
 class User(Base, UserMixin):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
